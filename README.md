@@ -40,6 +40,26 @@ npm run preview  # previsualiza la compilación de producción
 npm run check    # revisa tipos y convenciones de Svelte
 ```
 
+## Desarrollo
+
+1. Instala las dependencias del proyecto con `npm install`.
+2. Ejecuta `npm run dev` para arrancar el servidor de desarrollo de Vite/SvelteKit.
+3. Mantén `npm run check` o `npm run check:watch` en ejecución si quieres recibir retroalimentación
+   continua del chequeo de tipos mientras iteras sobre los componentes en `src/`.
+4. Puedes usar `npm run preview` para revisar localmente cómo se comporta el build de producción
+   mientras desarrollas.
+
+Los directorios bajo `src/lib` reúnen utilidades de animación, componentes de gráficas, layout y
+secciones ya preparadas para iterar mientras el servidor de desarrollo está activo.
+
+## Despliegue
+
+La aplicación está configurada con el adapter estático de SvelteKit, por lo que `npm run build`
+pre-renderiza todos los assets necesarios para servir el sitio como archivos estáticos. Los
+archivos generados se pueden publicar en cualquier servicio de hosting estático (por ejemplo,
+Vercel, Netlify o GitHub Pages). Para validar el resultado localmente utiliza `npm run preview`,
+que levanta un servidor Vite sirviendo el build de producción.
+
 ## Próximos pasos
 
 - Sustituir los textos y datos de ejemplo por la narrativa definitiva en español.
