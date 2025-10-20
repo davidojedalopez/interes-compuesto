@@ -7,13 +7,6 @@
                 <p class="brand__subtitle">Historias que crecen contigo</p>
             </div>
         </div>
-        <nav aria-label="Atajos de la historia">
-            <a href="#inicio">Inicio</a>
-            <a href="#historia">Historia</a>
-            <a href="#visualizaciones">Visualizaciones</a>
-            <a href="#interaccion">Interacción</a>
-            <a href="#cierre">Cierre</a>
-        </nav>
     </div>
 </header>
 
@@ -69,31 +62,7 @@
         color: var(--color-text-muted);
     }
 
-    nav {
-        display: flex;
-        gap: 1.25rem;
-        font-size: 0.85rem;
-        text-transform: uppercase;
-        letter-spacing: 0.18em;
-    }
-
-    nav a {
-        text-decoration: none;
-        opacity: 0.85;
-        transition: opacity 150ms ease;
-    }
-
-    nav a:hover,
-    nav a:focus-visible {
-        opacity: 1;
-        color: var(--color-accent);
-    }
-
     @media (max-width: 900px) {
-        nav {
-            display: none;
-        }
-
         .shell {
             padding-inline: 1.25rem;
         }
