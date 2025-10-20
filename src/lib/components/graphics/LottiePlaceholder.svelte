@@ -14,7 +14,7 @@
             loop: true,
             autoplay: true,
             animationData: {
-                v: '5.7.8',
+                v: '5.7.0',
                 fr: 60,
                 ip: 0,
                 op: 120,
