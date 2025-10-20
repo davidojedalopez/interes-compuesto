@@ -1,12 +1,12 @@
 # AGENTS.md
 
 ## Product vision
-- Build an educational, interactive narrative that demystifies compound interest for Spanish-speaking audiences while keeping the Border Collie motif alive.
+- Build an educational, interactive narrative that demystifies compound interest for Spanish-speaking audiences while keeping the dog-themed visual flair alive (animations, effects, UI accents) without forcing canine scenarios into the financial storytelling.
 - Combine scrollytelling, motion, and data visualizations to help visitors move from intuition to confident application.
 
 ## Audience & voice
 - Explain finance in plain, adult language: approachable, witty, and precise—never condescending.
-- Use analogies anchored in everyday life (bonus points for dog-centric comparisons) and weave them into the copy, charts, and animations.
+- Use analogies anchored in everyday life; reserve the dog influence for aesthetic touches rather than the underlying financial examples.
 
 ## Narrative & pedagogy
 - Structure long-form stories inside `ScrollSection` wrappers to maintain consistent spacing, tone variants (`default`, `surface`, `highlight`), and scroll markers.
@@ -20,6 +20,7 @@
 - Treat the existing sections (`HeroSection`, `StoryScroller`, `InteractiveSandbox`, `InteractionTeaser`, `ClosingSection`) as building blocks; extend or replace their content rather than creating ad-hoc layouts.
 - When adding visualizations, provide both Chart.js and D3 implementations where feasible so the sandbox toggle remains meaningful.
 - Keep GSAP + ScrollTrigger timelines encapsulated in their section components; ensure animations are accessible (respect reduced-motion settings, avoid critical information conveyed by motion alone).
+- Lean into dog-inspired motion, sound design, or styling for delight, but let the numerical examples, datasets, and explanatory copy stay broadly applicable beyond canine scenarios.
 
 ## Technical guidelines
 - Use SvelteKit with TypeScript. Prefer named exports through `$lib/index.ts` for reusable components and utilities.
