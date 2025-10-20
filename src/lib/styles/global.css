@@ -1,0 +1,131 @@
+:root {
+    color-scheme: light dark;
+    --color-background: #0f172a;
+    --color-surface: #111827;
+    --color-surface-alt: #1f2937;
+    --color-text-primary: #f8fafc;
+    --color-text-muted: #cbd5f5;
+    --color-accent: #f97316;
+    --color-accent-soft: rgba(249, 115, 22, 0.15);
+    --font-heading: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+    --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+    --content-max-width: 1080px;
+    --spacing-xxl: clamp(6rem, 12vw, 12rem);
+    --spacing-xl: clamp(4rem, 8vw, 8rem);
+    --spacing-lg: clamp(2rem, 6vw, 6rem);
+    --spacing-md: clamp(1.5rem, 4vw, 4rem);
+    --spacing-sm: clamp(1rem, 2.5vw, 2rem);
+    --spacing-xs: 0.75rem;
+    background-color: var(--color-background);
+    font-family: var(--font-body);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at top, rgba(15, 118, 110, 0.25), transparent 55%),
+        radial-gradient(circle at bottom, rgba(59, 130, 246, 0.2), transparent 45%),
+        var(--color-background);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+}
+
+main {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+a {
+    color: inherit;
+}
+
+a:hover,
+a:focus-visible {
+    color: var(--color-accent);
+}
+
+section[data-section] {
+    position: relative;
+    padding: var(--spacing-xl) 1.5rem;
+    scroll-margin-top: var(--spacing-lg);
+}
+
+section[data-section]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-sm);
+}
+
+.section-content {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    display: grid;
+    gap: var(--spacing-md);
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--font-heading);
+    letter-spacing: 0.02em;
+    margin: 0;
+}
+
+h1 {
+    font-size: clamp(2.75rem, 6vw, 4.5rem);
+    line-height: 1.05;
+}
+
+h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+}
+
+p {
+    margin: 0;
+    max-width: 72ch;
+    color: var(--color-text-muted);
+}
+
+button {
+    font-family: inherit;
+    border: 0;
+    border-radius: 999px;
+    padding: 0.85rem 1.75rem;
+    background: linear-gradient(135deg, var(--color-accent), #fb923c);
+    color: var(--color-text-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+    box-shadow: 0 10px 35px rgba(249, 115, 22, 0.25);
+}
+
+button:hover,
+button:focus-visible {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 18px 45px rgba(249, 115, 22, 0.35);
+}
+
+::selection {
+    background: var(--color-accent);
+    color: var(--color-background);
+}
+
+@media (max-width: 768px) {
+    section[data-section] {
+        padding: var(--spacing-lg) 1rem;
+    }
+
+    .section-content {
+        gap: var(--spacing-sm);
+    }
+}
