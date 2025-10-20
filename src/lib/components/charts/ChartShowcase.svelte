@@ -1,8 +1,31 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
+    type ChartDataset = {
+        label: string;
+        data: number[];
+        borderColor?: string;
+        backgroundColor?: string;
+        fill?: boolean;
+    };
+
+    export let labels: string[] = [];
+    export let datasets: ChartDataset[] = [];
+    export let ariaLabel = 'Visualización de crecimiento compuesto con Chart.js';
+
     let canvas: HTMLCanvasElement;
     let chart: import('chart.js/auto').Chart | undefined;
+
+    const defaultColors = [
+        {
+            borderColor: 'rgba(249, 115, 22, 1)',
+            backgroundColor: 'rgba(249, 115, 22, 0.25)'
+        },
+        {
+            borderColor: 'rgba(56, 189, 248, 1)',
+            backgroundColor: 'rgba(56, 189, 248, 0.25)'
+        }
+    ];
 
     onMount(() => {
         let active = true;
@@ -15,19 +38,15 @@
             chart = new Chart(canvas, {
                 type: 'line',
                 data: {
-                    labels: ['A', 'B', 'C', 'D', 'E', 'F'],
-                    datasets: [
-                        {
-                            label: 'Datos de ejemplo',
-                            data: [0, 2, 3, 4, 6, 9],
-                            tension: 0.4,
-                            fill: true,
-                            borderColor: 'rgba(249, 115, 22, 1)',
-                            backgroundColor: 'rgba(249, 115, 22, 0.25)',
-                            pointBackgroundColor: '#fff',
-                            pointBorderColor: 'rgba(249, 115, 22, 1)'
-                        }
-                    ]
+                    labels,
+                    datasets: datasets.map((dataset, index) => ({
+                        ...defaultColors[index % defaultColors.length],
+                        fill: true,
+                        tension: 0.35,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: defaultColors[index % defaultColors.length].borderColor,
+                        ...dataset
+                    }))
                 },
                 options: {
                     responsive: true,
@@ -41,6 +60,10 @@
                                 }
                             }
                         }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
                     },
                     scales: {
                         x: {
@@ -71,10 +94,23 @@
             chart?.destroy();
         };
     });
+
+    $: if (chart) {
+        chart.data.labels = labels;
+        chart.data.datasets = datasets.map((dataset, index) => ({
+            ...defaultColors[index % defaultColors.length],
+            fill: true,
+            tension: 0.35,
+            pointBackgroundColor: '#fff',
+            pointBorderColor: defaultColors[index % defaultColors.length].borderColor,
+            ...dataset
+        }));
+        chart.update('none');
+    }
 </script>
 
 <div class="chart-shell">
-    <canvas bind:this={canvas} aria-label="Visualización base en Chart.js"></canvas>
+    <canvas bind:this={canvas} aria-label={ariaLabel}></canvas>
 </div>
 
 <style>
