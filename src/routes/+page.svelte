@@ -4,6 +4,7 @@
         HeroSection,
         InteractionTeaser,
         InteractiveSandbox,
+        FormulaSection,
         ScrollSection,
         StoryScroller
     } from '$lib';
@@ -15,6 +16,10 @@
 
 <ScrollSection id="historia" label="Estructura narrativa">
     <StoryScroller />
+</ScrollSection>
+
+<ScrollSection id="formula" label="Fórmula desmenuzada" tone="surface">
+    <FormulaSection />
 </ScrollSection>
 
 <ScrollSection id="visualizaciones" label="Exploración de datos" tone="surface">
