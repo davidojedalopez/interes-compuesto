@@ -10,7 +10,8 @@ const config = {
                         '@animations': 'src/lib/animations',
                         '@components': 'src/lib/components',
                         '@data': 'src/lib/data',
-                        '@styles': 'src/lib/styles'
+                        '@styles': 'src/lib/styles',
+                        '@utils': 'src/lib/utils'
                 }
         }
 };
