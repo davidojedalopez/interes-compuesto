@@ -1,93 +1,129 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
+    import { onDestroy, onMount } from 'svelte';
     import * as d3 from 'd3';
+    import type { ChartPoint } from './ChartShowcase.svelte';
 
-    type SamplePoint = { step: number; value: number };
-
-    const sample: SamplePoint[] = [
-        { step: 0, value: 1 },
-        { step: 1, value: 1.4 },
-        { step: 2, value: 2 },
-        { step: 3, value: 3.1 },
-        { step: 4, value: 4.9 }
-    ];
+    export let points: ChartPoint[] = [];
 
     let container: HTMLDivElement;
+    let svg: d3.Selection<SVGSVGElement, unknown, null, undefined> | null = null;
 
-    onMount(() => {
-        const svg = d3
+    const padding = { top: 32, right: 24, bottom: 48, left: 56 };
+    const viewBox = { width: 560, height: 320 };
+
+    function prepareData(data: ChartPoint[]) {
+        return data.map((point, index) => ({
+            step: index,
+            label: point.label,
+            total: point.total,
+            contributions: point.contributions
+        }));
+    }
+
+    function render(data: ChartPoint[]) {
+        const series = prepareData(data.length ? data : [{ label: '0 años', total: 0, contributions: 0 }]);
+
+        svg?.remove();
+
+        svg = d3
             .select(container)
             .append('svg')
-            .attr('viewBox', '0 0 560 320')
+            .attr('viewBox', `0 0 ${viewBox.width} ${viewBox.height}`)
             .attr('role', 'img')
-            .attr('aria-label', 'Bosquejo D3 en progreso');
+            .attr('aria-label', 'Línea D3 que compara aportes contra crecimiento total año con año.');
 
-        const padding = { top: 32, right: 24, bottom: 48, left: 56 };
-        const width = 560 - padding.left - padding.right;
-        const height = 320 - padding.top - padding.bottom;
+        const width = viewBox.width - padding.left - padding.right;
+        const height = viewBox.height - padding.top - padding.bottom;
 
         const x = d3
             .scaleLinear()
-            .domain(d3.extent(sample, (d: SamplePoint) => d.step) as [number, number])
+            .domain(d3.extent(series, (d) => d.step) as [number, number])
             .range([0, width]);
 
         const y = d3
             .scaleLinear()
-            .domain([0, d3.max(sample, (d: SamplePoint) => d.value) ?? 1])
+            .domain([0, d3.max(series, (d) => Math.max(d.total, d.contributions)) ?? 1])
             .nice()
             .range([height, 0]);
 
-        const group = svg
-            .append('g')
-            .attr('transform', `translate(${padding.left},${padding.top})`);
+        const group = svg.append('g').attr('transform', `translate(${padding.left},${padding.top})`);
 
-        const line = d3
-            .line<SamplePoint>()
+        const area = d3
+            .area<typeof series[number]>()
             .x((d) => x(d.step))
-            .y((d) => y(d.value))
+            .y0(height)
+            .y1((d) => y(d.total))
             .curve(d3.curveCatmullRom.alpha(0.85));
 
-        group
-            .append('path')
-            .datum(sample)
-            .attr('fill', 'none')
-            .attr('stroke', 'rgba(56, 189, 248, 1)')
-            .attr('stroke-width', 4)
-            .attr('stroke-linecap', 'round')
-            .attr('d', line);
+        const totalLine = d3
+            .line<typeof series[number]>()
+            .x((d) => x(d.step))
+            .y((d) => y(d.total))
+            .curve(d3.curveCatmullRom.alpha(0.85));
+
+        const contributionsLine = d3
+            .line<typeof series[number]>()
+            .x((d) => x(d.step))
+            .y((d) => y(d.contributions))
+            .curve(d3.curveCatmullRom.alpha(0.85));
+
+        group.append('path').datum(series).attr('fill', 'rgba(249, 115, 22, 0.18)').attr('d', area);
 
         group
             .append('path')
-            .datum(sample)
-            .attr('fill', 'rgba(56, 189, 248, 0.15)')
-            .attr(
-                'd',
-                d3
-                    .area<SamplePoint>()
-                    .x((d) => x(d.step))
-                    .y0(height)
-                    .y1((d) => y(d.value))
-                    .curve(d3.curveCatmullRom.alpha(0.85))
-            );
+            .datum(series)
+            .attr('fill', 'none')
+            .attr('stroke', 'rgba(249, 115, 22, 1)')
+            .attr('stroke-width', 4)
+            .attr('stroke-linecap', 'round')
+            .attr('d', totalLine);
+
+        group
+            .append('path')
+            .datum(series)
+            .attr('fill', 'none')
+            .attr('stroke', 'rgba(56, 189, 248, 1)')
+            .attr('stroke-width', 3)
+            .attr('stroke-dasharray', '6 6')
+            .attr('stroke-linecap', 'round')
+            .attr('d', contributionsLine);
+
+        const xAxis = d3
+            .axisBottom(x)
+            .ticks(Math.min(series.length, 8))
+            .tickFormat((value) => series[Number(value)]?.label ?? String(value))
+            .tickSizeOuter(0);
+
+        const yAxis = d3.axisLeft(y).ticks(5).tickSizeOuter(0);
 
         group
             .append('g')
             .attr('transform', `translate(0,${height})`)
-            .call(d3.axisBottom(x).ticks(sample.length).tickSizeOuter(0))
+            .call(xAxis)
             .selectAll('text')
-            .attr('fill', '#cbd5f5');
+            .attr('fill', '#cbd5f5')
+            .attr('font-size', '12px');
 
         group
             .append('g')
-            .call(d3.axisLeft(y).ticks(5).tickSizeOuter(0))
+            .call(yAxis)
             .selectAll('text')
-            .attr('fill', '#cbd5f5');
+            .attr('fill', '#cbd5f5')
+            .attr('font-size', '12px');
 
         svg.selectAll('path.domain, line').attr('stroke', 'rgba(148, 163, 184, 0.25)');
+    }
 
-        return () => {
-            svg.remove();
-        };
+    onMount(() => {
+        render(points);
+    });
+
+    $: if (container) {
+        render(points);
+    }
+
+    onDestroy(() => {
+        svg?.remove();
     });
 </script>
 

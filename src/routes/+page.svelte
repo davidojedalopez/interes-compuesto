@@ -9,22 +9,22 @@
     } from '$lib';
 </script>
 
-<ScrollSection id="inicio" label="Introducción" tone="surface">
+<ScrollSection id="inicio" label="Portal de bienvenida" tone="surface">
     <HeroSection />
 </ScrollSection>
 
-<ScrollSection id="historia" label="Estructura narrativa">
+<ScrollSection id="historia" label="Recorrido narrativo" tone="highlight">
     <StoryScroller />
 </ScrollSection>
 
-<ScrollSection id="visualizaciones" label="Exploración de datos" tone="surface">
+<ScrollSection id="visualizaciones" label="Laboratorio interactivo" tone="surface">
     <InteractiveSandbox />
 </ScrollSection>
 
-<ScrollSection id="interaccion" label="Interacciones y animaciones" tone="highlight">
+<ScrollSection id="interaccion" label="Celebración y próximos pasos" tone="highlight">
     <InteractionTeaser />
 </ScrollSection>
 
-<ScrollSection id="cierre" label="Siguiente paso">
+<ScrollSection id="cierre" label="Epílogo inspirador">
     <ClosingSection />
 </ScrollSection>
